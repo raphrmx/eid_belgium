@@ -1,5 +1,6 @@
 # eid_belgium
 
+[![Video tour](https://img.shields.io/badge/Video-Guided_tour-c4302b?logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=oH_-1EU7DNc)
 [![Live demo](https://img.shields.io/badge/Live_demo-packages.comapps.be-b7791f)](https://packages.comapps.be/eid_belgium/)
 [![Pub Version](https://img.shields.io/pub/v/eid_belgium?color=0175C2)](https://pub.dev/packages/eid_belgium)
 [![Build](https://img.shields.io/github/actions/workflow/status/raphrmx/eid_belgium/ci.yml?branch=main&label=build)](https://github.com/raphrmx/eid_belgium/actions/workflows/ci.yml)
