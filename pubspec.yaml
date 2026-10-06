@@ -2,7 +2,7 @@ name: eid_belgium
 description: >-
   Reads the Belgian eID, Kids ID and residence cards: identity, address, photo
   and certificates, with PIN, signature and chip checks.
-version: 0.1.0
+version: 0.1.1
 homepage: https://packages.comapps.be/#eid_belgium
 repository: https://github.com/raphrmx/eid_belgium
 issue_tracker: https://github.com/raphrmx/eid_belgium/issues

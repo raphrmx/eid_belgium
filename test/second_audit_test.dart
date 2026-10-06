@@ -50,7 +50,8 @@ void main() {
 
   test('keeps the signatures out of onApdu without the national number',
       () async {
-    final whole = await BelgianEidReader(SimulatedBelgianCard()).read();
+    final whole = await BelgianEidReader(SimulatedBelgianCard())
+        .read(showPrivateData: true);
     final signature = hexString(whole.identitySignature!.sublist(4, 40));
 
     final exchanges = <ApduExchange>[];

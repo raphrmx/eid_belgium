@@ -100,6 +100,7 @@ final class BelgianEidWatcher {
     this.verifySignatures = true,
     this.trustedRoots,
     this.verifyCard = true,
+    this.showPrivateData = false,
     this.onApdu,
     this.onProgress,
     Duration interval = const Duration(milliseconds: 400),
@@ -148,6 +149,11 @@ final class BelgianEidWatcher {
 
   /// Whether the chip must prove it is genuine.
   bool verifyCard;
+
+  /// Whether the national register number may be read, off by default; it
+  /// also needs [BelgianEidPart.nationalNumber] in [parts]. See
+  /// `BelgianEidReader.read`.
+  bool showPrivateData;
 
   /// Called with each command and answer, except presence checks. The PIN
   /// is never reported.
@@ -258,6 +264,7 @@ final class BelgianEidWatcher {
               _ => null,
             },
         verifyCard: verifyCard,
+        showPrivateData: showPrivateData,
         onProgress: onProgress,
       );
       // The card may have been swapped while it was being read.

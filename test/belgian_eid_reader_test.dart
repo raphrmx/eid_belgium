@@ -12,6 +12,7 @@ void main() {
     final eid = await BelgianEidReader(card).read(
       verifySignatures: false,
       verifyCard: false,
+      showPrivateData: true,
     );
 
     expect(eid.identity.lastName, 'Dupont');
@@ -66,11 +67,11 @@ void main() {
     expect(files.toSet(), {'00A4020C024031'});
   });
 
-  test('leaves the national number out of everything it returns', () async {
+  test('leaves the national number out of everything it returns, by default',
+      () async {
     final eid = await BelgianEidReader(fakeCard()).read(
       verifySignatures: false,
       verifyCard: false,
-      parts: BelgianEidPart.all.difference({BelgianEidPart.nationalNumber}),
     );
     final identity = eid.identity;
     expect(identity.nationalNumber, isNull);
@@ -83,6 +84,27 @@ void main() {
     // The rest of the card is still read, the photo checked.
     expect(eid.address?.municipality, 'Bruxelles');
     expect(eid.photoMatches, isTrue);
+  });
+
+  test('reads the national number only with the part and showPrivateData',
+      () async {
+    Future<BelgianEid> read(Set<BelgianEidPart> parts, {required bool show}) =>
+        BelgianEidReader(fakeCard()).read(
+          verifySignatures: false,
+          verifyCard: false,
+          parts: parts,
+          showPrivateData: show,
+        );
+    final withoutPart =
+        BelgianEidPart.all.difference({BelgianEidPart.nationalNumber});
+    final noPart = await read(withoutPart, show: true);
+    expect(noPart.identity.nationalNumber, isNull);
+    final notShown = await read(BelgianEidPart.all, show: false);
+    expect(notShown.identity.nationalNumber, isNull);
+    expect(notShown.identitySignature, isNull);
+    final both = await read(BelgianEidPart.all, show: true);
+    expect(both.identity.nationalNumber, '85073003328');
+    expect(both.identitySignature, isNotNull);
   });
 
   test('selects the Belpic applet again when another was left selected',

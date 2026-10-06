@@ -84,8 +84,14 @@ final class BelgianEidReader {
   /// too old for it are read, [BelgianEid.authenticity] saying so. Each
   /// proof uses one of the 5000 the chip allows before it wants the PIN.
   ///
-  /// Without the national number in [parts], the signatures are checked but
-  /// not returned: they would give it away.
+  /// The national register number needs both
+  /// [BelgianEidPart.nationalNumber] in [parts] and [showPrivateData], which
+  /// is off by default so that it never comes back unless asked for twice:
+  /// Belgian law restricts its use to those it authorises, and most uses do
+  /// not need it. Without it, it is removed from the identity file once
+  /// read, the signatures are checked but not returned, since they would
+  /// give it away, and `onApdu` gets the answers that hold it with their
+  /// data zeroed.
   ///
   /// [photoCache] spares reading a photo already read. [onProgress] is an
   /// estimate that only grows and ends on 1.
@@ -105,11 +111,12 @@ final class BelgianEidReader {
     bool verifySignatures = true,
     List<Uint8List>? trustedRoots,
     bool verifyCard = true,
+    bool showPrivateData = false,
     BelgianReadProgress? onProgress,
   }) =>
       _exclusive(() async {
         final withNationalNumber =
-            parts.contains(BelgianEidPart.nationalNumber);
+            showPrivateData && parts.contains(BelgianEidPart.nationalNumber);
         final signatures =
             verifySignatures || parts.contains(BelgianEidPart.signatures);
         final withAddress = parts.contains(BelgianEidPart.address);
@@ -280,22 +287,26 @@ final class BelgianEidReader {
     BelgianEidFile.addressSignature,
   };
 
-  /// Reads the identity file, leaving the national number out unless
-  /// [withNationalNumber].
-  Future<BelgianIdentity> readIdentity({bool withNationalNumber = true}) =>
+  /// Reads the identity file, leaving the national number out unless both
+  /// [withNationalNumber] and [showPrivateData], as [read] does.
+  Future<BelgianIdentity> readIdentity({
+    bool withNationalNumber = true,
+    bool showPrivateData = false,
+  }) =>
       _exclusive(() async {
-        _hideData = !withNationalNumber;
+        final withNumber = withNationalNumber && showPrivateData;
+        _hideData = !withNumber;
         Uint8List? file;
         try {
           file = await _readFile(BelgianEidFile.identity);
           return BelgianIdentity.parse(
             file,
-            withNationalNumber: withNationalNumber,
+            withNationalNumber: withNumber,
           );
         } finally {
           _hideData = false;
           // The raw bytes, also held by a parse error, carry the number.
-          if (!withNationalNumber) file?.fillRange(0, file.length, 0);
+          if (!withNumber) file?.fillRange(0, file.length, 0);
         }
       });
 

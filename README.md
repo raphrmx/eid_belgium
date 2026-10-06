@@ -53,6 +53,7 @@ final watcher = BelgianEidWatcher(
   verifySignatures: true,    // check the national register's signatures
   verifyCard: true,          // have the chip prove it is genuine
   trustedRoots: null,        // the Belgian roots
+  showPrivateData: false,    // the national register number, see Personal data
   onProgress: null,          // 0 to 1, for a progress bar
   onApdu: null,              // every command and answer, never the PIN
 )..start();
@@ -82,9 +83,6 @@ final eid = await reader.read(parts: {BelgianEidPart.address});
 eid.photo;                    // null
 eid.identity.nationalNumber;  // null, and removed from the raw fields too
 ```
-
-Without the national number, the signatures are checked but not returned:
-they would give it away.
 
 ## Turn cards down
 
@@ -176,8 +174,24 @@ alone. `tamperedLastName` and `cloned` give cards the checks turn down.
 ## Personal data
 
 The holder must consent to their card being read, and only those authorised
-may use the national register number: leave `nationalNumber` out of `parts`
-otherwise.
+may use the national register number.
+
+The number is therefore read only when asked for twice:
+`BelgianEidPart.nationalNumber` in `parts`, which `BelgianEidPart.all`
+includes, and `showPrivateData`, off by default. Most uses do not need it.
+
+```dart
+await reader.read();                        // identity.nationalNumber is null
+await reader.read(showPrivateData: true);   // and here it is
+await reader.read(
+  parts: {BelgianEidPart.address},          // no nationalNumber part:
+  showPrivateData: true,                    // still null
+);
+```
+
+Without it, the number is removed from the identity file once read, and
+the signatures are checked but not returned: they would give it away.
+`onApdu` gets the answers that hold it with their data zeroed.
 
 ## Sources
 

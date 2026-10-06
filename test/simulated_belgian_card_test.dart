@@ -4,7 +4,8 @@ import 'package:test/test.dart';
 
 void main() {
   test('reads as a consistent card', () async {
-    final eid = await BelgianEidReader(SimulatedBelgianCard()).read();
+    final eid = await BelgianEidReader(SimulatedBelgianCard())
+        .read(showPrivateData: true);
     final identity = eid.identity;
 
     expect(identity.lastName, 'Specimen');

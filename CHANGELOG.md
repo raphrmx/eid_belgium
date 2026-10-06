@@ -1,3 +1,11 @@
+## 0.1.1
+
+- `showPrivateData`, off by default, on `BelgianEidReader.read`,
+  `readIdentity` and `BelgianEidWatcher`. The national register number,
+  whose use Belgian law restricts, now needs both
+  `BelgianEidPart.nationalNumber` in `parts` and `showPrivateData`: reads
+  leave it out by default.
+
 ## 0.1.0
 
 - First release: reads the Belgian eID, Kids ID and residence cards through

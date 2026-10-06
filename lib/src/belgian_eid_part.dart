@@ -11,10 +11,12 @@ enum BelgianEidPart {
   /// number, which they would give away.
   signatures,
 
-  /// The national register number, whose use Belgian law restricts. When
-  /// left out, it is removed from the identity file once read.
+  /// The national register number, whose use Belgian law restricts. It is
+  /// read only with `showPrivateData` too; otherwise it is removed from the
+  /// identity file once read.
   nationalNumber;
 
-  /// Every part: the whole card.
+  /// Every part: the whole card, the national number only with
+  /// `showPrivateData`.
   static const all = {address, photo, signatures, nationalNumber};
 }

@@ -9,10 +9,12 @@ void main() {
 
   Future<BelgianEid> read({
     Set<BelgianEidPart> parts = BelgianEidPart.all,
+    bool showPrivateData = true,
   }) =>
       BelgianEidReader(SimulatedBelgianCard()).read(
         parts: parts,
         trustedRoots: trusted,
+        showPrivateData: showPrivateData,
       );
 
   BelgianEid roundTrip(BelgianEid eid) => BelgianEid.fromJson(
@@ -57,7 +59,10 @@ void main() {
   });
 
   test('keeps the national number out when the read did', () async {
-    final eid = await read(parts: {BelgianEidPart.address});
+    final eid = await read(
+      parts: {BelgianEidPart.address},
+      showPrivateData: false,
+    );
     final text = jsonEncode(eid.toJson());
     expect(text, isNot(contains('90051512391')));
     expect(

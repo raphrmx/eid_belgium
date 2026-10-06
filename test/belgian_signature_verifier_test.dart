@@ -102,6 +102,7 @@ void main() {
     setUpAll(() async {
       eid = await BelgianEidReader(SimulatedBelgianCard()).read(
         trustedRoots: trusted,
+        showPrivateData: true,
       );
       certificate = eid.nationalRegisterCertificate!;
     });
