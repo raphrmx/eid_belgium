@@ -1,3 +1,14 @@
+## 0.1.2
+
+- Needs eid 0.1.1 and crypto 3.0.7.
+- The README says what reading a card takes: a USB card reader, through
+  `eid_ccid`. On the web, where no page reaches a card reader, the package
+  checks cards read elsewhere and runs the simulator. The platform badge no
+  longer lists the web.
+- The README opens on a picture of which packages to add for each document,
+  and lists eid_icao and eid_nfc among the other eid packages. pub.dev shows
+  the same picture as a screenshot.
+
 ## 0.1.1
 
 - `showPrivateData`, off by default, on `BelgianEidReader.read`,
