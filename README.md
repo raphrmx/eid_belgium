@@ -6,12 +6,19 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/raphrmx/eid_belgium/ci.yml?branch=main&label=build)](https://github.com/raphrmx/eid_belgium/actions/workflows/ci.yml)
 ![Maintainer](https://img.shields.io/badge/Maintainer-Raphael_Vrient-733d90)
 [![Licence](https://img.shields.io/badge/Licence-MIT-8C6A3F)](LICENSE)
-![Platforms](https://img.shields.io/badge/Platforms-Android,_iOS,_macOS,_Windows,_Linux,_Web-22375C.svg)
+![Platforms](https://img.shields.io/badge/Platforms-Android,_iOS,_macOS,_Windows,_Linux-22375C.svg)
 [![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=ZN6D382YQAV5N)
 
 Reads the Belgian eID, the Kids ID and the residence cards (EU, EU+, A to N)
 through their contact chip: identity, address, photo and certificates. None
 of it needs the PIN.
+
+Reading a card takes a USB card reader, through `eid_ccid` on Android, iOS,
+macOS, Windows and Linux. No browser lets a page reach a card reader: on the
+web, the package checks cards read elsewhere (`BelgianEid.fromJson`,
+`BelgianSignatureVerifier`) and runs the simulator, as the live demo does.
+
+![Which packages for which document: a Belgian card in a USB reader takes eid_belgium and eid_ccid and needs no key; a passport or an EU identity card takes eid_icao, with eid_nfc on a phone or eid_ccid on a contactless USB reader, and needs the CAN or the MRZ](https://public.comapps.be/packages/eid/eid_situations.svg)
 
 ## Install
 
@@ -210,7 +217,9 @@ Electronic identity cards in Dart:
 | Package | What it does |
 | --- | --- |
 | [eid](https://pub.dev/packages/eid) | APDUs, ISO 7816-4 file reading and the values national cards share. |
+| [eid_icao](https://pub.dev/packages/eid_icao) | Passports and identity cards with an ICAO 9303 chip. |
 | [eid_ccid](https://pub.dev/packages/eid_ccid) | The transport for a USB or PC/SC card reader. |
+| [eid_nfc](https://pub.dev/packages/eid_nfc) | The transport for the NFC of an Android phone or an iPhone. |
 
 Every package COMAPPS publishes is listed at
 [packages.comapps.be](https://packages.comapps.be).

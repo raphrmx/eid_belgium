@@ -14,13 +14,16 @@ topics:
   - smartcard
   - identity
   - belpic
+screenshots:
+  - description: Which packages to add for a Belgian card or a passport, the key each needs and what the read gives back.
+    path: screenshots/situations.png
 
 environment:
   sdk: ^3.3.0
 
 dependencies:
-  crypto: ^3.0.3
-  eid: ^0.1.0
+  crypto: ^3.0.7
+  eid: ^0.1.1
   pointycastle: ^4.0.0
 
 dev_dependencies:
